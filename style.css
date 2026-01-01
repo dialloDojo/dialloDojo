@@ -12,6 +12,19 @@ a:link { color: #000099; text-decoration: none; }
 a:visited { color: #464646; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* Navigation links - always gray, no blue */
+nav a:link,
+nav a:visited,
+nav a:hover,
+nav a:active {
+    color: #464646;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
 /* Modern Grid Layout */
 .container {
     display: grid;
