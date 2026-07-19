@@ -1,51 +1,312 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dialloDojo</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/pole.png">
-    <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "uw13xnk7g0");
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dialloDojo</title>
+<link rel="icon" type="image/png" sizes="16x16" href="images/pole.png">
+<script type="text/javascript">
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "uw13xnk7g0");
 </script>
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Serif+JP:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #f7f3e9; overflow-x: hidden; }
+  a { color: #26221a; }
+  a:hover { color: #8c2f1b; }
+  ::selection { background: #26221a; color: #f7f3e9; }
+  @keyframes inkSpread { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  @media (max-width: 900px) {
+    .r-nav { padding: 16px 24px !important; }
+    .r-nav-links { gap: 22px !important; font-size: 15px !important; }
+    .r-hero { padding: 110px 24px 70px !important; }
+    .r-sec { padding: 90px 24px !important; }
+    .r-grid-2 { grid-template-columns: 1fr !important; gap: 48px !important; }
+    .r-projects { grid-template-columns: 1fr 1fr !important; }
+    .r-vert { display: none !important; }
+  }
+  @media (max-width: 600px) {
+    .r-logo-text { display: none !important; }
+    .r-nav-links { gap: 18px !important; font-size: 14px !important; }
+    .r-cols { grid-template-columns: 1fr !important; gap: 28px !important; }
+    .r-projects { grid-template-columns: 1fr !important; }
+    .r-notes { flex-direction: column !important; gap: 14px !important; }
+    .r-footer { flex-direction: column !important; gap: 10px !important; text-align: center !important; }
+  }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="position: relative; font-family: 'EB Garamond', serif; color: #26221a; cursor: crosshair;">
+  <canvas ref="{{ inkCanvasRef }}" style="position: fixed; inset: 0; z-index: 0;"></canvas>
 
-    <div class="container">
-        <nav>
-            <a href="index.html" class="home-icon">
-                <img src="images/pole.png" alt="Home" width="30" height="25">
-            </a><br>
-            <ul>
-                <li><a href="about.html">About</a></li>
-                <!-- <li><a href="essays.html">Essays</a></li> -->
-                <li><a href="projects.html">Projects</a></li>
-                <!-- <li><a href="backlog.html">Backlog</a></li> -->
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            <a href="index.html" class="home-icon">
-                <img src="images/pole.png" alt="Home" width="30" height="25">
-            </a>
-        </nav>
-
-        <div></div>
-
-        <main>
-            <img src="images/dojo.jpg" alt="dojo" class="hero-img" width="410" height="293">
-            
-            <article>
-                Welcome! <br><br>
-                <br>This is a gallery of ideas.<br><br>
-
-                ] bringing ideas to life, one line of code at a time [  
-            </article>
-        </main>
+  <nav class="r-nav" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding: 22px 56px; background: linear-gradient(to bottom, rgba(247,243,233,0.92) 60%, rgba(247,243,233,0)); pointer-events: none;">
+    <div onClick="{{ goHome }}" style="display: flex; align-items: center; gap: 14px; cursor: pointer; pointer-events: auto;">
+      <img src="images/pole.png" alt="dojo mark" width="30" height="25">
+      <span class="r-logo-text" style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.2em; color: #7a7264;">DIALLODOJO</span>
     </div>
+    <div class="r-nav-links" style="display: flex; gap: 40px; font-size: 17px; letter-spacing: 0.06em; pointer-events: auto;">
+      <span onClick="{{ goAbout }}" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">About</span>
+      <span onClick="{{ goProjects }}" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">Projects</span>
+      <span onClick="{{ goContact }}" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">Contact</span>
+    </div>
+  </nav>
 
+  <div style="position: relative; z-index: 1;">
+
+    <section id="home" class="r-hero" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 120px 56px 80px; box-sizing: border-box; max-width: 1200px; margin: 0 auto;">
+      <div style="animation: fadeUp 1.2s ease-out both;">
+        <div style="font-family: 'Noto Serif JP', serif; font-weight: 300; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68; margin-bottom: 28px;">墨 — THE INK DOJO</div>
+        <h1 style="font-size: clamp(38px, 9vw, 92px); line-height: 1.08; font-weight: 400; margin: 0; letter-spacing: -0.01em;">Every visit leaves<br>a different <em style="font-style: italic;">mark</em>.</h1>
+        <div style="width: 84px; height: 2px; background: #b4a583; margin: 40px 0; transform-origin: left; animation: inkSpread 1.4s 0.5s ease-out both;"></div>
+        <p style="font-size: 20px; line-height: 1.7; max-width: 480px; color: #4d463a; margin: 0;">I'm Abdoulaye Diallo — programmer, creative, strategist. This site is rice paper: your cursor is the brush, and nothing here stays still. Neither does the work.</p>
+      </div>
+      <div class="r-vert" style="position: absolute; right: 56px; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; font-family: 'Noto Serif JP', serif; font-size: 14px; letter-spacing: 0.4em; color: #8a7f68; pointer-events: none;">一行ずつ、命を吹き込む</div>
+    </section>
+
+    <section id="about" class="r-sec" style="padding: 140px 56px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
+      <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease;">
+        <div style="display: flex; align-items: baseline; gap: 24px;">
+          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">壱 — ABOUT</span>
+          <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
+        </div>
+        <div class="r-grid-2" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 80px; margin-top: 56px; align-items: start;">
+          <div>
+            <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; line-height: 1.2; margin: 0 0 32px;">A builder who trains ideas until they hold their own.</h2>
+            <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0 0 20px;">Co-Founder &amp; Chief Product Officer at <a href="https://myaiguys.net" target="_blank" rel="noopener">MyAiGuys</a>. Business analyst, prompt engineer, full-stack developer. I thrive at the intersection of technical execution and creative vision.</p>
+            <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0;">Fast learner. Great communicator. Creative problem solver. I translate complex ideas into simple, functional systems — rapidly.</p>
+            <div class="r-cols" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 56px;">
+              <div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; margin-bottom: 14px;">PASSIONS</div>
+                <div style="font-size: 18px; line-height: 1.8;">Software · Art · Innovation<br>Strategy · Entrepreneurship</div>
+              </div>
+              <div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; margin-bottom: 14px;">CURRENTLY LEARNING</div>
+                <div style="font-size: 18px; line-height: 1.8;">Full-stack architecture, AI integration, the principles of great product design.</div>
+              </div>
+            </div>
+            <div style="margin-top: 48px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; margin-bottom: 16px;">TECH I LOVE RIGHT NOW</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Claude Code</span>
+                <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Strudel</span>
+                <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">n8n</span>
+                <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Python</span>
+                <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Yuka</span>
+              </div>
+            </div>
+          </div>
+          <div style="position: relative;">
+            <img src="images/projectExe.jpeg" alt="PROJECT.EXE — pixel art of two hands reaching, after Michelangelo" style="width: 100%; display: block; border: 12px solid #26221a;">
+            <div class="r-vert" style="position: absolute; top: 10px; right: -34px; writing-mode: vertical-rl; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.4em; color: #8a7f68;">創造の火花</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="r-sec" style="padding: 140px 56px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
+      <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease;">
+        <div style="display: flex; align-items: baseline; gap: 24px;">
+          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">弐 — PROJECTS</span>
+          <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
+        </div>
+        <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; margin: 56px 0 16px;">Hanging scrolls.</h2>
+        <p style="font-size: 19px; color: #4d463a; margin: 0 0 56px;">Four works in progress — pull one down to read it.</p>
+      </div>
+      <div class="r-projects" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; align-items: start;">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+          <div data-reveal="1" onClick="{{ p.toggle }}" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease, box-shadow 0.35s ease; cursor: pointer;">
+            <div style="height: 10px; background: #26221a; box-shadow: 0 3px 0 rgba(60,50,30,0.2);"></div>
+            <div style="background: rgba(252,249,241,0.92); border: 1px solid #d8cfba; border-top: none; padding: 26px 24px 22px; transition: transform 0.35s ease;" style-hover="transform: translateY(6px);">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <span style="font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.3em; color: #8a7f68;">{{ p.kanji }}</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: {{ p.statusColor }};">{{ p.status }}</span>
+              </div>
+              <div style="font-size: 27px; margin-top: 14px;">{{ p.name }}</div>
+              <div style="font-size: 15px; color: #7a7264; margin-top: 6px; line-height: 1.5;">{{ p.tagline }}</div>
+              <sc-if value="{{ p.isOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="animation: fadeUp 0.5s ease-out both;">
+                  <div style="width: 100%; height: 1px; background: #d8cfba; margin: 18px 0;"></div>
+                  <p style="font-size: 16px; line-height: 1.7; color: #4d463a; margin: 0;">{{ p.detail }}</p>
+                  <a href="{{ p.url }}" target="_blank" rel="noopener" onClick="{{ p.stop }}" style="display: inline-block; margin-top: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.15em; border: 1px solid #26221a; padding: 9px 18px; text-decoration: none;">VISIT SITE →</a>
+                </div>
+              </sc-if>
+              <div style="text-align: center; margin-top: 16px; color: #b4a583; font-size: 14px;">{{ p.chevron }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease 0.2s, transform 0.9s ease 0.2s; margin-top: 64px; display: flex; gap: 48px; font-size: 16px; color: #7a7264;" class="r-notes">
+        <span><em style="font-style: italic;">Experiments &amp; tools</em> — brewing in the back room.</span>
+        <span><em style="font-style: italic;">Open source</em> — first scrolls being inked.</span>
+      </div>
+    </section>
+
+    <section id="contact" class="r-sec" style="padding: 140px 56px 100px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
+      <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease;">
+        <div style="display: flex; align-items: baseline; gap: 24px;">
+          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">参 — CONTACT</span>
+          <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
+        </div>
+        <div class="r-grid-2" style="display: grid; grid-template-columns: 1fr 420px; gap: 80px; margin-top: 56px; align-items: start;">
+          <div>
+            <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; line-height: 1.2; margin: 0 0 28px;">The dojo door is open.</h2>
+            <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0 0 40px; max-width: 440px;">Interesting projects, collaborations, or fellow builders who just want to connect — the best way to reach me is by email.</p>
+            <div style="display: flex; flex-direction: column; gap: 16px; font-size: 20px;">
+              <a href="mailto:adiallovc@gmail.com" style="text-decoration: none; display: flex; align-items: center; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; width: 70px;">MAIL</span>adiallovc@gmail.com</a>
+              <a href="https://github.com/dialloDojo" target="_blank" rel="noopener" style="text-decoration: none; display: flex; align-items: center; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; width: 70px;">GITHUB</span>/dialloDojo</a>
+            </div>
+            <sc-if value="{{ showMusic }}" hint-placeholder-val="{{ true }}">
+              <div style="margin-top: 56px; max-width: 440px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; margin-bottom: 12px;">MUSIC IN THE DOJO</div>
+                <iframe title="SoundCloud player" width="100%" height="20" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1178495929&color=%2326221a&inverse=false&auto_play=false&show_user=true" style="filter: sepia(0.3); opacity: 0.85;"></iframe>
+                <div style="font-size: 13px; color: #8a7f68; margin-top: 6px;">Fontaines D.C. — I Love You</div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="position: relative;">
+            <img src="images/garden.jpg" alt="zen garden" style="width: 100%; height: 340px; object-fit: cover; display: block; filter: saturate(0.85);">
+            <div class="r-vert" style="position: absolute; top: 12px; right: -30px; writing-mode: vertical-rl; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.4em; color: #8a7f68;">道場の扉は開いている</div>
+          </div>
+        </div>
+      </div>
+      <div class="r-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 120px; padding-top: 28px; border-top: 1px solid #d8cfba; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.15em; color: #8a7f68;">
+        <span>© 2026 ABDOULAYE DIALLO — DIALLODOJO.COM</span>
+        <span>WRITTEN IN INK · REDRAWN EVERY VISIT</span>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;inkColor&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#1e1a12&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#1e1a12&quot;, &quot;#8c2f1b&quot;, &quot;#274067&quot;], &quot;section&quot;: &quot;Ink&quot; },
+  &quot;showMusic&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Extras&quot; }
+}">
+class Component extends DCLogic {
+  state = { openId: null };
+  projectData = [
+    { id: 'jade', kanji: '壱', name: 'jadeStage', status: 'LIVE', tagline: 'streaming without algorithms', url: 'https://jadestage.com/', detail: 'jadeStage flips the script and provides video streaming without opaque algorithms. Built for creators tired of algorithmic suppression and viewers craving genuine discovery.' },
+    { id: 'wav', kanji: '弐', name: 'WAV', status: 'BUILDING', tagline: 'the audio-only social network', url: 'https://joinwav.com/', detail: 'Record a shout, tune into a frequency, drop an echo. Raw voice, real tonality — social the way humans were wired to connect.' },
+    { id: 'parclo', kanji: '参', name: 'Parclo', status: 'BUILDING', tagline: 'product memory for AI dev', url: 'https://parclo.dev', detail: 'Persistent product memory for AI-assisted development. Keep your full roadmap in view so your agent never loses the forest for the trees.' },
+    { id: 'jep', kanji: '四', name: 'jointEnterPrize', status: 'VALIDATING', tagline: 'festivals for indie filmmakers', url: 'https://jointenterprize.com/', detail: 'The ultimate platform for independent filmmakers to showcase their short films, compete in local film festivals, and win real prizes.' },
+  ];
+  componentDidMount() {
+    this.startInk();
+    this.observeReveals();
+  }
+  componentWillUnmount() {
+    cancelAnimationFrame(this.inkRaf);
+    window.removeEventListener('mousemove', this.onMove);
+    window.removeEventListener('click', this.onSplat);
+    window.removeEventListener('touchstart', this.onTouchStart);
+    window.removeEventListener('touchmove', this.onTouchMove);
+    window.removeEventListener('touchend', this.onTouchEnd);
+    window.removeEventListener('resize', this.onResize);
+    if (this.io) this.io.disconnect();
+  }
+  observeReveals() {
+    this.io = new IntersectionObserver(entries => {
+      for (const en of entries) {
+        if (en.isIntersecting) {
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'translateY(0)';
+          this.io.unobserve(en.target);
+        }
+      }
+    }, { threshold: 0.12 });
+    const attach = () => { if (this.root) this.root.querySelectorAll('[data-reveal]').forEach(el => this.io.observe(el)); };
+    attach();
+    setTimeout(attach, 800); // catch late-mounted cards
+  }
+  startInk() {
+    const c = this.inkCanvas;
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const paper = '#f7f3e9';
+    const size = () => { c.width = window.innerWidth; c.height = window.innerHeight; ctx.fillStyle = paper; ctx.fillRect(0, 0, c.width, c.height); };
+    size();
+    this.onResize = size;
+    window.addEventListener('resize', size);
+    let last = null;
+    const ink = () => this.props.inkColor ?? '#1e1a12';
+    this.onMove = e => {
+      const x = e.clientX, y = e.clientY;
+      if (last) {
+        const dist = Math.hypot(x - last.x, y - last.y);
+        ctx.globalAlpha = 0.75;
+        ctx.strokeStyle = ink();
+        ctx.lineCap = 'round';
+        ctx.lineWidth = Math.max(1.5, 18 - dist * 0.4);
+        ctx.beginPath();
+        ctx.moveTo(last.x, last.y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+      last = { x, y };
+    };
+    this.onSplat = e => {
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = ink();
+      for (let i = 0; i < 9; i++) {
+        const a = Math.random() * Math.PI * 2, d = Math.random() * 26 + 6, r = Math.random() * 3 + 1;
+        ctx.beginPath();
+        ctx.arc(e.clientX + Math.cos(a) * d, e.clientY + Math.sin(a) * d, r, 0, 7);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    };
+    this.onTouchStart = e => { const t = e.touches[0]; if (t) last = { x: t.clientX, y: t.clientY }; };
+    this.onTouchMove = e => { const t = e.touches[0]; if (t) this.onMove({ clientX: t.clientX, clientY: t.clientY }); };
+    this.onTouchEnd = () => { last = null; };
+    window.addEventListener('mousemove', this.onMove);
+    window.addEventListener('click', this.onSplat);
+    window.addEventListener('touchstart', this.onTouchStart, { passive: true });
+    window.addEventListener('touchmove', this.onTouchMove, { passive: true });
+    window.addEventListener('touchend', this.onTouchEnd);
+    const fade = () => {
+      ctx.fillStyle = 'rgba(247,243,233,0.03)';
+      ctx.fillRect(0, 0, c.width, c.height);
+      this.inkRaf = requestAnimationFrame(fade);
+    };
+    fade();
+  }
+  goTo(id) {
+    const el = this.root && this.root.querySelector('#' + id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 40, behavior: 'smooth' });
+  }
+  renderVals() {
+    const openId = this.state.openId;
+    return {
+      rootRef: el => { this.root = el; },
+      inkCanvasRef: el => { this.inkCanvas = el; },
+      goHome: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+      goAbout: () => this.goTo('about'),
+      goProjects: () => this.goTo('projects'),
+      goContact: () => this.goTo('contact'),
+      showMusic: this.props.showMusic ?? true,
+      projects: this.projectData.map(p => ({
+        ...p,
+        statusColor: p.status === 'LIVE' ? '#8c2f1b' : '#8a7f68',
+        isOpen: openId === p.id,
+        chevron: openId === p.id ? '▲' : '▼',
+        toggle: () => this.setState(s => ({ openId: s.openId === p.id ? null : p.id })),
+        stop: e => e.stopPropagation(),
+      })),
+    };
+  }
+}
+</script>
 </body>
 </html>
