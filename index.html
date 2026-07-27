@@ -192,7 +192,7 @@
           <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
         </div>
         <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; margin: 56px 0 16px;">The tansu in the corner.</h2>
-        <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0 0 36px; max-width: 620px;">A chest of small drawers: experiments I ran, tools I built, source I opened, and essays worth keeping within reach. Nothing here is a product. That is the point. Pull a drawer.</p>
+        <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0 0 36px; max-width: 620px;">A chest of small drawers: experiments I ran, tools I built, and essays within reach. Nothing here is a product. That is the point. Pull a drawer.</p>
 
         <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px;">
           <sc-for list="{{ dojoFilters }}" as="f" hint-placeholder-count="4">
@@ -229,11 +229,13 @@
             </sc-if>
           </div>
         </sc-for>
+        <sc-if value="{{ dojoIsEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="border-bottom: 1px solid #d8cfba; padding: 34px 26px; display: flex; align-items: center; gap: 22px;">
+            <span aria-hidden="true" style="flex: none; width: 34px; height: 9px; border-radius: 2px; background: #d8cfba;"></span>
+            <span style="font-size: 17px; color: #8a7f68;">This drawer is empty. That is a to-do, not an oversight.</span>
+          </div>
+        </sc-if>
       </div>
-
-      <sc-if value="{{ dojoIsEmpty }}" hint-placeholder-val="{{ false }}">
-        <p style="font-size: 16px; color: #8a7f68; margin: 28px 0 0;">Nothing in that drawer yet.</p>
-      </sc-if>
     </section>
 
     <section id="contact" class="r-sec" style="padding: 140px 56px 100px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
@@ -284,19 +286,23 @@ class Component extends DCLogic {
     { id: 'wav', kanji: '弐', name: 'WAV', status: 'BUILDING', tagline: 'the audio-only social network', url: 'https://joinwav.com/', detail: 'Record a shout, tune into a frequency, drop an echo. Raw voice, real tonality — social the way humans were wired to connect.' },
     { id: 'parclo', kanji: '参', name: 'Parclo', status: 'BUILDING', tagline: 'product memory for AI dev', url: 'https://parclo.dev', detail: 'Persistent product memory for AI-assisted development. Keep your full roadmap in view so your agent never loses the forest for the trees.' },
   ];
-  // The tansu. Add a drawer by adding an entry: the filter chips above the
-  // cabinet are derived from whatever `type` values appear here, so a new type
-  // grows its own chip and an emptied one disappears. Nothing else to update.
+  // Categories shown as filter chips, in this order, whether or not anything
+  // is filed under them yet. TOOL sits here deliberately at zero: the empty
+  // drawer is a statement of intent, not an oversight.
+  //
+  // Any `type` used in dojoData that is missing from this list still gets its
+  // own chip appended automatically, so adding an entry never silently hides it.
+  dojoCategories = ['EXPERIMENT', 'TOOL', 'ESSAY'];
   dojoData = [
     {
-      id: 'fiblabs', kanji: '公開', type: 'OPEN SOURCE', name: 'fibLabs',
+      id: 'fiblabs', kanji: '実験', type: 'EXPERIMENT', name: 'fibLabs',
       tagline: 'Fibonacci as a teaching sandbox',
       detail: 'Two zero-dependency Node labs built on the same seven-line function. Lab 0 races five implementations and audits where each one stops being exact: Binet\'s closed form is the fastest and starts returning wrong answers at n=71, silently. Lab 1 renders the same math as terminal graphics.',
-      meta: 'JavaScript · Node · no dependencies',
+      meta: 'JavaScript · Node · two labs',
       url: 'https://github.com/dialloDojo/fibLabs', cta: 'VIEW SOURCE →',
     },
     {
-      id: 'braille', kanji: '道具', type: 'TOOL', name: 'brailleCanvas',
+      id: 'braille', kanji: '実験', type: 'EXPERIMENT', name: 'brailleCanvas',
       tagline: 'a terminal plotter at 8x the resolution',
       detail: 'A terminal places one character per grid cell, so drawing with blocks caps you at one plottable point per cell and every curve becomes a staircase. Unicode gives all 256 eight-dot braille patterns their own codepoint, and each is a 2x4 grid of independently raisable dots, so one cell carries eight addressable points instead of one. Same screen area, eight times the detail. Run "node demo.js resolution" to see the same sine wave drawn both ways.',
       meta: 'Unicode U+2800 to U+28FF · ANSI · Node · no dependencies',
@@ -431,11 +437,12 @@ class Component extends DCLogic {
     const goDojo = () => this.goTo('dojo');
     const goContact = () => this.goTo('contact');
 
-    // Chips are derived from the data rather than hard-coded, so a category can
-    // never be listed with nothing behind it. Counts come from the full set,
-    // not the filtered one, so the numbers hold still as you click around.
-    const types = [...new Set(this.dojoData.map(d => d.type))];
-    const dojoFilters = ['ALL', ...types].map(label => {
+    // Declared categories first, in their stated order, then any type used in
+    // the data that was not declared. Counts come from the full set rather than
+    // the filtered one, so the numbers hold still as you click around.
+    const undeclared = [...new Set(this.dojoData.map(d => d.type))]
+      .filter(type => !this.dojoCategories.includes(type));
+    const dojoFilters = ['ALL', ...this.dojoCategories, ...undeclared].map(label => {
       const isActive = dojoFilter === label;
       return {
         label,
