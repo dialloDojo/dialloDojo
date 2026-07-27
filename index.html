@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>dialloDojo — Abdoulaye Diallo</title>
-<meta name="description" content="Abdoulaye Diallo — programmer, creative, strategist. Products, experiments, tools and essays from the ink dojo.">
+<title>dialloDojo, Abdoulaye Diallo</title>
+<meta name="description" content="Abdoulaye Diallo, programmer, creative, strategist. Products, experiments, tools and essays from the ink dojo.">
 <meta name="theme-color" content="#f7f3e9">
 <meta property="og:type" content="website">
-<meta property="og:title" content="dialloDojo — Abdoulaye Diallo">
+<meta property="og:title" content="dialloDojo, Abdoulaye Diallo">
 <meta property="og:description" content="Programmer, creative, strategist. Products, experiments, tools and essays from the ink dojo.">
 <meta property="og:url" content="https://diallodojo.com/">
 <meta property="og:image" content="https://diallodojo.com/images/projectExe.jpeg">
@@ -54,6 +54,10 @@
     .r-projects { grid-template-columns: 1fr 1fr !important; }
     .r-vert { display: none !important; }
     .r-drawer-tag { display: none !important; }
+    /* The vertical caption is hidden at this width, so the portrait no longer
+       needs to reserve space for it. */
+    .r-hero-grid { grid-template-columns: 1fr !important; gap: 44px !important; }
+    .r-hero-portrait { padding-right: 0 !important; justify-self: start !important; }
   }
   @media (max-width: 600px) {
     .r-logo-text { display: none !important; }
@@ -99,11 +103,20 @@
   <div style="position: relative; z-index: 1;">
 
     <section id="home" class="r-hero" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 120px 56px 80px; box-sizing: border-box; max-width: 1200px; margin: 0 auto;">
-      <div style="animation: fadeUp 1.2s ease-out both;">
-        <div style="font-family: 'Noto Serif JP', serif; font-weight: 300; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68; margin-bottom: 28px;">墨 — THE INK DOJO</div>
-        <h1 style="font-size: clamp(38px, 9vw, 92px); line-height: 1.08; font-weight: 400; margin: 0; letter-spacing: -0.01em;">Every visit leaves<br>a different <em style="font-style: italic;">mark</em>.</h1>
-        <div style="width: 84px; height: 2px; background: #b4a583; margin: 40px 0; transform-origin: left; animation: inkSpread 1.4s 0.5s ease-out both;"></div>
-        <p style="font-size: 20px; line-height: 1.7; max-width: 480px; color: #4d463a; margin: 0;">I'm Abdoulaye Diallo — programmer, creative, strategist. This site is rice paper: your cursor is the brush, and nothing here stays still. Neither does the work.</p>
+      <div class="r-hero-grid" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center; animation: fadeUp 1.2s ease-out both;">
+        <div>
+          <div style="font-family: 'Noto Serif JP', serif; font-weight: 300; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68; margin-bottom: 28px;">墨 · THE INK DOJO</div>
+          <h1 style="font-size: clamp(38px, 9vw, 92px); line-height: 1.08; font-weight: 400; margin: 0; letter-spacing: -0.01em;">Every visit leaves<br>a different <em style="font-style: italic;">mark</em>.</h1>
+          <div style="width: 84px; height: 2px; background: #b4a583; margin: 40px 0; transform-origin: left; animation: inkSpread 1.4s 0.5s ease-out both;"></div>
+          <p style="font-size: 20px; line-height: 1.7; max-width: 480px; color: #4d463a; margin: 0;">I'm Abdoulaye Diallo, programmer, creative, strategist. This site is rice paper: your cursor is the brush, and nothing here stays still. Neither does the work.</p>
+        </div>
+        <!-- Padded on the right so the portrait clears the vertical caption that
+             sits absolutely positioned against the section edge. -->
+        <div class="r-hero-portrait" style="justify-self: center; padding-right: 44px; text-align: center;">
+          <img src="images/pixel-portrait.png" alt="Pixel portrait of Abdoulaye Diallo" width="384" height="384"
+               decoding="async"
+               style="image-rendering: pixelated; width: min(280px, 46vw); height: auto; display: block; opacity: 0.7;">
+        </div>
       </div>
       <div class="r-vert" style="position: absolute; right: 56px; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; font-family: 'Noto Serif JP', serif; font-size: 14px; letter-spacing: 0.4em; color: #8a7f68; pointer-events: none;">一行ずつ、命を吹き込む</div>
     </section>
@@ -111,14 +124,14 @@
     <section id="about" class="r-sec" style="padding: 140px 56px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
       <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease;">
         <div style="display: flex; align-items: baseline; gap: 24px;">
-          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">壱 — ABOUT</span>
+          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">壱 · ABOUT</span>
           <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
         </div>
         <div class="r-grid-2" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 80px; margin-top: 56px; align-items: start;">
           <div>
             <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; line-height: 1.2; margin: 0 0 32px;">A builder who trains ideas until they hold their own.</h2>
             <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0 0 20px;">Co-Founder &amp; Chief Product Officer at <a href="https://myaiguys.net" target="_blank" rel="noopener">MyAiGuys</a>. Business analyst, prompt engineer, full-stack developer. I thrive at the intersection of technical execution and creative vision.</p>
-            <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0;">Fast learner. Great communicator. Creative problem solver. I translate complex ideas into simple, functional systems — rapidly.</p>
+            <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0;">Fast learner. Great communicator. Creative problem solver. I translate complex ideas into simple, functional systems.</p>
             <div class="r-cols" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 56px;">
               <div>
                 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; margin-bottom: 14px;">PASSIONS</div>
@@ -151,7 +164,7 @@
     <section id="projects" class="r-sec" style="padding: 140px 56px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
       <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease;">
         <div style="display: flex; align-items: baseline; gap: 24px;">
-          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">弐 — PROJECTS</span>
+          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">弐 · PROJECTS</span>
           <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
         </div>
         <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; margin: 56px 0 16px;">Hanging scrolls.</h2>
@@ -188,7 +201,7 @@
     <section id="dojo" class="r-sec" style="padding: 140px 56px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
       <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease;">
         <div style="display: flex; align-items: baseline; gap: 24px;">
-          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">参 — DOJO</span>
+          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">参 · DOJO</span>
           <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
         </div>
         <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; margin: 56px 0 16px;">The tansu in the corner.</h2>
@@ -241,13 +254,13 @@
     <section id="contact" class="r-sec" style="padding: 140px 56px 100px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
       <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease;">
         <div style="display: flex; align-items: baseline; gap: 24px;">
-          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">四 — CONTACT</span>
+          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">四 · CONTACT</span>
           <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
         </div>
         <div class="r-grid-2" style="display: grid; grid-template-columns: 1fr 420px; gap: 80px; margin-top: 56px; align-items: start;">
           <div>
             <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; line-height: 1.2; margin: 0 0 28px;">The dojo door is open.</h2>
-            <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0 0 40px; max-width: 440px;">Interesting projects, collaborations, or fellow builders who just want to connect — the best way to reach me is by email.</p>
+            <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0 0 40px; max-width: 440px;">Interesting projects, collaborations, or fellow builders who just want to connect, the best way to reach me is by email.</p>
             <div style="display: flex; flex-direction: column; gap: 16px; font-size: 20px;">
               <a href="mailto:adiallovc@gmail.com" style="text-decoration: none; display: flex; align-items: center; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; width: 70px;">MAIL</span>adiallovc@gmail.com</a>
               <a href="https://github.com/dialloDojo" target="_blank" rel="noopener" style="text-decoration: none; display: flex; align-items: center; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; width: 70px;">GITHUB</span>/dialloDojo</a>
@@ -256,7 +269,7 @@
               <div style="margin-top: 56px; max-width: 440px;">
                 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; margin-bottom: 12px;">MUSIC IN THE DOJO</div>
                 <iframe title="SoundCloud player" width="100%" height="20" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1178495929&color=%2326221a&inverse=false&auto_play=true&show_user=true" style="filter: sepia(0.3); opacity: 0.85;"></iframe>
-                <div style="font-size: 13px; color: #8a7f68; margin-top: 6px;">Fontaines D.C. — I Love You</div>
+                <div style="font-size: 13px; color: #8a7f68; margin-top: 6px;">Fontaines D.C. · I Love You</div>
               </div>
             </sc-if>
           </div>
@@ -267,7 +280,7 @@
         </div>
       </div>
       <div class="r-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 120px; padding-top: 28px; border-top: 1px solid #d8cfba; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.15em; color: #8a7f68;">
-        <span>© 2026 ABDOULAYE DIALLO — DIALLODOJO.COM</span>
+        <span>© 2026 ABDOULAYE DIALLO · DIALLODOJO.COM</span>
         <span>WRITTEN IN INK · REDRAWN EVERY VISIT</span>
       </div>
     </section>
@@ -284,7 +297,7 @@ class Component extends DCLogic {
   projectData = [
     { id: 'jade', kanji: '壱', name: 'jadeStage', status: 'LIVE', tagline: 'streaming without algorithms', url: 'https://jadestage.com/', detail: 'jadeStage flips the script and provides video streaming without opaque algorithms. Built for creators tired of algorithmic suppression and viewers craving genuine discovery.' },
     { id: 'parclo', kanji: '弐', name: 'Parclo', status: 'BUILDING', tagline: 'product memory for AI dev', url: 'https://parclo.dev', detail: 'Persistent product memory for AI-assisted development. Keep your full roadmap in view so your agent never loses the forest for the trees.' },
-    { id: 'wav', kanji: '参', name: 'WAV', status: 'VALIDATING', tagline: 'the audio-only social network', url: 'https://joinwav.com/', detail: 'Record a shout, tune into a frequency, drop an echo. Raw voice, real tonality — social the way humans were wired to connect.' },
+    { id: 'wav', kanji: '参', name: 'WAV', status: 'VALIDATING', tagline: 'the audio-only social network', url: 'https://joinwav.com/', detail: 'Record a shout, tune into a frequency, drop an echo. Raw voice, real tonality. Social the way humans were wired to connect.' },
   ];
   // Categories shown as filter chips, in this order, whether or not anything
   // is filed under them yet. TOOL sits here deliberately at zero: the empty
