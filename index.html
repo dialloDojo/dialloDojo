@@ -3,8 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>dialloDojo</title>
+<title>dialloDojo — Abdoulaye Diallo</title>
+<meta name="description" content="Abdoulaye Diallo — programmer, creative, strategist. Products, experiments, tools and essays from the ink dojo.">
+<meta name="theme-color" content="#f7f3e9">
+<meta property="og:type" content="website">
+<meta property="og:title" content="dialloDojo — Abdoulaye Diallo">
+<meta property="og:description" content="Programmer, creative, strategist. Products, experiments, tools and essays from the ink dojo.">
+<meta property="og:url" content="https://diallodojo.com/">
+<meta property="og:image" content="https://diallodojo.com/images/projectExe.jpeg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="16x16" href="images/pole.png">
+<link rel="preconnect" href="https://unpkg.com">
 <script type="text/javascript">
 (function(c,l,a,r,i,t,y){
     c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -28,6 +37,14 @@
   @keyframes inkSpread { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  /* A drawer being pulled: the contents slide out from inside the cabinet. */
+  @keyframes drawerOut { from { opacity: 0; transform: translateX(-22px); } to { opacity: 1; transform: translateX(0); } }
+
+  /* Every interactive element here is a span, so the browser gives it no focus
+     ring of its own. Without this rule the whole site is unusable by keyboard.
+     :focus-visible rather than :focus so mouse users never see the outline. */
+  :focus-visible { outline: 2px solid #8c2f1b; outline-offset: 4px; }
+
   @media (max-width: 900px) {
     .r-nav { padding: 16px 24px !important; }
     .r-nav-links { gap: 22px !important; font-size: 15px !important; }
@@ -36,6 +53,7 @@
     .r-grid-2 { grid-template-columns: 1fr !important; gap: 48px !important; }
     .r-projects { grid-template-columns: 1fr 1fr !important; }
     .r-vert { display: none !important; }
+    .r-drawer-tag { display: none !important; }
   }
   @media (max-width: 600px) {
     .r-logo-text { display: none !important; }
@@ -44,6 +62,21 @@
     .r-projects { grid-template-columns: 1fr !important; }
     .r-notes { flex-direction: column !important; gap: 14px !important; }
     .r-footer { flex-direction: column !important; gap: 10px !important; text-align: center !important; }
+    .r-drawer-kanji { display: none !important; }
+    .r-drawer-face { padding: 18px 18px !important; gap: 14px !important; }
+    .r-drawer-body { padding-left: 20px !important; }
+  }
+
+  /* The ink trail, the fades and the smooth scroll are all motion this user has
+     asked not to be shown. The canvas itself is switched off in startInk(); this
+     handles everything driven by CSS. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 </style>
 </helmet>
@@ -51,14 +84,15 @@
   <canvas ref="{{ inkCanvasRef }}" style="position: fixed; inset: 0; z-index: 0;"></canvas>
 
   <nav class="r-nav" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; padding: 22px 56px; background: linear-gradient(to bottom, rgba(247,243,233,0.92) 60%, rgba(247,243,233,0)); pointer-events: none;">
-    <div onClick="{{ goHome }}" style="display: flex; align-items: center; gap: 14px; cursor: pointer; pointer-events: auto;">
-      <img src="images/pole.png" alt="dojo mark" width="30" height="25">
+    <div onClick="{{ goHome }}" onKeyDown="{{ goHomeKey }}" role="button" sc-camel-tab-index="0" aria-label="Back to top" style="display: flex; align-items: center; gap: 14px; cursor: pointer; pointer-events: auto;">
+      <img src="images/pole.png" alt="" width="30" height="25">
       <span class="r-logo-text" style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.2em; color: #7a7264;">DIALLODOJO</span>
     </div>
-    <div class="r-nav-links" style="display: flex; gap: 40px; font-size: 17px; letter-spacing: 0.06em; pointer-events: auto;">
-      <span onClick="{{ goAbout }}" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">About</span>
-      <span onClick="{{ goProjects }}" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">Projects</span>
-      <span onClick="{{ goContact }}" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">Contact</span>
+    <div class="r-nav-links" role="navigation" aria-label="Sections" style="display: flex; gap: 40px; font-size: 17px; letter-spacing: 0.06em; pointer-events: auto;">
+      <span onClick="{{ goAbout }}" onKeyDown="{{ goAboutKey }}" role="link" sc-camel-tab-index="0" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">About</span>
+      <span onClick="{{ goProjects }}" onKeyDown="{{ goProjectsKey }}" role="link" sc-camel-tab-index="0" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">Projects</span>
+      <span onClick="{{ goDojo }}" onKeyDown="{{ goDojoKey }}" role="link" sc-camel-tab-index="0" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">Dojo</span>
+      <span onClick="{{ goContact }}" onKeyDown="{{ goContactKey }}" role="link" sc-camel-tab-index="0" style="cursor: pointer; padding-bottom: 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #26221a;">Contact</span>
     </div>
   </nav>
 
@@ -107,8 +141,8 @@
             </div>
           </div>
           <div style="position: relative;">
-            <img src="images/projectExe.jpeg" alt="PROJECT.EXE — pixel art of two hands reaching, after Michelangelo" style="width: 100%; display: block; border: 12px solid #26221a;">
-            <div class="r-vert" style="position: absolute; top: 10px; right: -34px; writing-mode: vertical-rl; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.4em; color: #8a7f68;">創造の火花</div>
+            <img src="images/projectExe.jpeg" alt="PROJECT.EXE, pixel art of two hands reaching, after Michelangelo" width="734" height="378" decoding="async" style="width: 100%; height: auto; display: block; box-shadow: 0 1px 0 #d8cfba, 0 18px 30px -22px rgba(38,34,26,0.45);">
+            <div class="r-vert" style="position: absolute; top: 10px; right: -40px; writing-mode: vertical-rl; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.4em; color: #8a7f68;">創造の火花</div>
           </div>
         </div>
       </div>
@@ -121,11 +155,11 @@
           <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
         </div>
         <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; margin: 56px 0 16px;">Hanging scrolls.</h2>
-        <p style="font-size: 19px; color: #4d463a; margin: 0 0 56px;">Four works in progress — pull one down to read it.</p>
+        <p style="font-size: 19px; color: #4d463a; margin: 0 0 56px;">Three works in progress. Pull one down to read it.</p>
       </div>
-      <div class="r-projects" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; align-items: start;">
-        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
-          <div data-reveal="1" onClick="{{ p.toggle }}" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease, box-shadow 0.35s ease; cursor: pointer;">
+      <div class="r-projects" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start;">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
+          <div data-reveal="1" onClick="{{ p.toggle }}" onKeyDown="{{ p.key }}" role="button" sc-camel-tab-index="0" aria-expanded="{{ p.isOpen }}" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease, box-shadow 0.35s ease; cursor: pointer;">
             <div style="height: 10px; background: #26221a; box-shadow: 0 3px 0 rgba(60,50,30,0.2);"></div>
             <div style="background: rgba(252,249,241,0.92); border: 1px solid #d8cfba; border-top: none; padding: 26px 24px 22px; transition: transform 0.35s ease;" style-hover="transform: translateY(6px);">
               <div style="display: flex; justify-content: space-between; align-items: baseline;">
@@ -146,16 +180,66 @@
           </div>
         </sc-for>
       </div>
-      <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease 0.2s, transform 0.9s ease 0.2s; margin-top: 64px; display: flex; gap: 48px; font-size: 16px; color: #7a7264;" class="r-notes">
-        <span><em style="font-style: italic;">Experiments &amp; tools</em> — brewing in the back room.</span>
-        <span><em style="font-style: italic;">Open source</em> — first scrolls being inked.</span>
+      <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease 0.2s, transform 0.9s ease 0.2s; margin-top: 64px; font-size: 16px; color: #7a7264;" class="r-notes">
+        <span>Smaller work lives in <span onClick="{{ goDojo }}" onKeyDown="{{ goDojoKey }}" role="link" sc-camel-tab-index="0" style="cursor: pointer; border-bottom: 1px solid #b4a583;" style-hover="color: #8c2f1b; border-bottom: 1px solid #8c2f1b;">the dojo</span> below.</span>
       </div>
+    </section>
+
+    <section id="dojo" class="r-sec" style="padding: 140px 56px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
+      <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease;">
+        <div style="display: flex; align-items: baseline; gap: 24px;">
+          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">参 — DOJO</span>
+          <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
+        </div>
+        <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; margin: 56px 0 16px;">The tansu in the corner.</h2>
+        <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0 0 36px; max-width: 620px;">A chest of small drawers: experiments I ran, tools I built, source I opened, and essays worth keeping within reach. Nothing here is a product. That is the point. Pull a drawer.</p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px;">
+          <sc-for list="{{ dojoFilters }}" as="f" hint-placeholder-count="4">
+            <span onClick="{{ f.select }}" onKeyDown="{{ f.key }}" role="button" sc-camel-tab-index="0" aria-pressed="{{ f.isActive }}"
+              style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; padding: 8px 15px; border: 1px solid {{ f.borderColor }}; background: {{ f.background }}; color: {{ f.color }}; transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;"
+              style-hover="border-color: #26221a;">{{ f.label }} <span style="opacity: 0.55;">{{ f.count }}</span></span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease; border: 1px solid #d8cfba; border-bottom: none; background: rgba(252,249,241,0.55);">
+        <sc-for list="{{ dojoEntries }}" as="d" hint-placeholder-count="3">
+          <div style="border-bottom: 1px solid #d8cfba; overflow: hidden;">
+            <div class="r-drawer-face" onClick="{{ d.toggle }}" onKeyDown="{{ d.key }}" role="button" sc-camel-tab-index="0" aria-expanded="{{ d.isOpen }}"
+              style="display: flex; align-items: center; gap: 22px; padding: 22px 26px; cursor: pointer; background: {{ d.faceBackground }}; transform: {{ d.faceTransform }}; transition: transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1), background 0.3s ease, box-shadow 0.42s ease; box-shadow: {{ d.faceShadow }};"
+              style-hover="background: #f1ead9;">
+              <span aria-hidden="true" style="flex: none; width: 34px; height: 9px; border-radius: 2px; background: {{ d.pullColor }}; transition: background 0.3s ease;"></span>
+              <span class="r-drawer-kanji" aria-hidden="true" style="flex: none; width: 46px; font-family: 'Noto Serif JP', serif; font-size: 14px; letter-spacing: 0.25em; color: #8a7f68;">{{ d.kanji }}</span>
+              <span style="flex: none; font-size: 23px;">{{ d.name }}</span>
+              <span class="r-drawer-tag" style="flex: 1; font-size: 15px; color: #7a7264;">{{ d.tagline }}</span>
+              <span style="flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: #8a7f68;">{{ d.type }}</span>
+            </div>
+            <sc-if value="{{ d.isOpen }}" hint-placeholder-val="{{ false }}">
+              <div class="r-drawer-body" style="animation: drawerOut 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both; background: #f2ece0; padding: 26px 30px 30px 82px; box-shadow: inset 0 9px 13px -11px rgba(38,34,26,0.5);">
+                <sc-if value="{{ d.hasQuote }}" hint-placeholder-val="{{ false }}">
+                  <blockquote style="margin: 0 0 22px; padding-left: 20px; border-left: 2px solid #b4a583; font-size: 19px; line-height: 1.65; font-style: italic; color: #3f3930;">{{ d.quote }}</blockquote>
+                </sc-if>
+                <p style="font-size: 16px; line-height: 1.75; color: #4d463a; margin: 0; max-width: 700px;">{{ d.detail }}</p>
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 22px; margin-top: 24px;">
+                  <a href="{{ d.url }}" target="_blank" rel="noopener" onClick="{{ d.stop }}" style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.15em; border: 1px solid #26221a; padding: 9px 18px; text-decoration: none;" style-hover="background: #26221a; color: #f7f3e9;">{{ d.cta }}</a>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #8a7f68;">{{ d.meta }}</span>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ dojoIsEmpty }}" hint-placeholder-val="{{ false }}">
+        <p style="font-size: 16px; color: #8a7f68; margin: 28px 0 0;">Nothing in that drawer yet.</p>
+      </sc-if>
     </section>
 
     <section id="contact" class="r-sec" style="padding: 140px 56px 100px; max-width: 1200px; margin: 0 auto; box-sizing: border-box;">
       <div data-reveal="1" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease;">
         <div style="display: flex; align-items: baseline; gap: 24px;">
-          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">参 — CONTACT</span>
+          <span style="font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: 0.5em; color: #8a7f68;">四 — CONTACT</span>
           <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
         </div>
         <div class="r-grid-2" style="display: grid; grid-template-columns: 1fr 420px; gap: 80px; margin-top: 56px; align-items: start;">
@@ -175,7 +259,7 @@
             </sc-if>
           </div>
           <div style="position: relative;">
-            <img src="images/garden.jpg" alt="zen garden" style="width: 100%; height: 340px; object-fit: cover; display: block; filter: saturate(0.85);">
+            <img src="images/garden-1400.jpg" alt="A raked zen garden" width="1400" height="932" loading="lazy" decoding="async" style="width: 100%; height: 340px; object-fit: cover; display: block; filter: saturate(0.85);">
             <div class="r-vert" style="position: absolute; top: 12px; right: -30px; writing-mode: vertical-rl; font-family: 'Noto Serif JP', serif; font-size: 13px; letter-spacing: 0.4em; color: #8a7f68;">道場の扉は開いている</div>
           </div>
         </div>
@@ -194,13 +278,48 @@
   &quot;showMusic&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Extras&quot; }
 }">
 class Component extends DCLogic {
-  state = { openId: null };
+  state = { openId: null, openDrawerId: null, dojoFilter: 'ALL' };
   projectData = [
     { id: 'jade', kanji: '壱', name: 'jadeStage', status: 'LIVE', tagline: 'streaming without algorithms', url: 'https://jadestage.com/', detail: 'jadeStage flips the script and provides video streaming without opaque algorithms. Built for creators tired of algorithmic suppression and viewers craving genuine discovery.' },
     { id: 'wav', kanji: '弐', name: 'WAV', status: 'BUILDING', tagline: 'the audio-only social network', url: 'https://joinwav.com/', detail: 'Record a shout, tune into a frequency, drop an echo. Raw voice, real tonality — social the way humans were wired to connect.' },
     { id: 'parclo', kanji: '参', name: 'Parclo', status: 'BUILDING', tagline: 'product memory for AI dev', url: 'https://parclo.dev', detail: 'Persistent product memory for AI-assisted development. Keep your full roadmap in view so your agent never loses the forest for the trees.' },
-    { id: 'jep', kanji: '四', name: 'jointEnterPrize', status: 'VALIDATING', tagline: 'festivals for indie filmmakers', url: 'https://jointenterprize.com/', detail: 'The ultimate platform for independent filmmakers to showcase their short films, compete in local film festivals, and win real prizes.' },
   ];
+  // The tansu. Add a drawer by adding an entry: the filter chips above the
+  // cabinet are derived from whatever `type` values appear here, so a new type
+  // grows its own chip and an emptied one disappears. Nothing else to update.
+  dojoData = [
+    {
+      id: 'fiblabs', kanji: '公開', type: 'OPEN SOURCE', name: 'fibLabs',
+      tagline: 'Fibonacci as a teaching sandbox',
+      detail: 'Two zero-dependency Node labs built on the same seven-line function. Lab 0 races five implementations and audits where each one stops being exact: Binet\'s closed form is the fastest and starts returning wrong answers at n=71, silently. Lab 1 renders the same math as terminal graphics.',
+      meta: 'JavaScript · Node · no dependencies',
+      url: 'https://github.com/dialloDojo/fibLabs', cta: 'VIEW SOURCE →',
+    },
+    {
+      id: 'braille', kanji: '道具', type: 'TOOL', name: 'brailleCanvas',
+      tagline: 'a terminal plotter at 8x the resolution',
+      detail: 'A terminal places one character per grid cell, so drawing with blocks caps you at one plottable point per cell and every curve becomes a staircase. Unicode gives all 256 eight-dot braille patterns their own codepoint, and each is a 2x4 grid of independently raisable dots, so one cell carries eight addressable points instead of one. Same screen area, eight times the detail. Run "node demo.js resolution" to see the same sine wave drawn both ways.',
+      meta: 'Unicode U+2800 to U+28FF · ANSI · Node · no dependencies',
+      url: 'https://github.com/dialloDojo/brailleCanvas', cta: 'VIEW SOURCE →',
+    },
+    {
+      id: 'bitter', kanji: '随筆', type: 'ESSAY', name: 'The Bitter Lesson',
+      tagline: 'Rich Sutton, 2019',
+      quote: 'The biggest lesson that can be read from 70 years of AI research is that general methods that leverage computation are ultimately the most effective, and by a large margin.',
+      detail: 'Sutton\'s case that hand-encoded human knowledge keeps losing to general methods that scale with compute. Short, unsentimental, and the essay I reread most often before deciding how to build something.',
+      meta: 'incompleteideas.net · March 13, 2019',
+      url: 'http://www.incompleteideas.net/IncIdeas/BitterLesson.html', cta: 'READ ESSAY →',
+    },
+  ];
+  // Enter and Space have to activate anything that behaves like a button but is
+  // not a <button>. Space additionally needs its default scroll suppressed.
+  onActivate(fn) {
+    return e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      fn();
+    };
+  }
   componentDidMount() {
     this.startInk();
     this.observeReveals();
@@ -213,6 +332,7 @@ class Component extends DCLogic {
     window.removeEventListener('touchmove', this.onTouchMove);
     window.removeEventListener('touchend', this.onTouchEnd);
     window.removeEventListener('resize', this.onResize);
+    if (this.onVisibility) document.removeEventListener('visibilitychange', this.onVisibility);
     if (this.io) this.io.disconnect();
   }
   observeReveals() {
@@ -238,6 +358,12 @@ class Component extends DCLogic {
     size();
     this.onResize = size;
     window.addEventListener('resize', size);
+
+    // A cursor trail that never settles is exactly the kind of motion that
+    // triggers vestibular symptoms. If the visitor has asked for reduced
+    // motion, paint the paper and stop: no trail, no splatter, no fade loop.
+    // The page keeps all of its content, it just stops moving on its own.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let last = null;
     const ink = () => this.props.inkColor ?? '#1e1a12';
     this.onMove = e => {
@@ -281,29 +407,96 @@ class Component extends DCLogic {
       this.inkRaf = requestAnimationFrame(fade);
     };
     fade();
+
+    // Nobody is watching the ink dry in a background tab. Browsers throttle
+    // rAF there but do not always stop it, so drop the loop on hide and pick it
+    // back up on show. Cancel before restarting or a fast hide/show cycle
+    // leaves two loops running and the ink fades at double speed.
+    this.onVisibility = () => {
+      cancelAnimationFrame(this.inkRaf);
+      if (!document.hidden) fade();
+    };
+    document.addEventListener('visibilitychange', this.onVisibility);
   }
   goTo(id) {
     const el = this.root && this.root.querySelector('#' + id);
     if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 40, behavior: 'smooth' });
   }
   renderVals() {
-    const openId = this.state.openId;
+    const { openId, openDrawerId, dojoFilter } = this.state;
+
+    const goHome = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    const goAbout = () => this.goTo('about');
+    const goProjects = () => this.goTo('projects');
+    const goDojo = () => this.goTo('dojo');
+    const goContact = () => this.goTo('contact');
+
+    // Chips are derived from the data rather than hard-coded, so a category can
+    // never be listed with nothing behind it. Counts come from the full set,
+    // not the filtered one, so the numbers hold still as you click around.
+    const types = [...new Set(this.dojoData.map(d => d.type))];
+    const dojoFilters = ['ALL', ...types].map(label => {
+      const isActive = dojoFilter === label;
+      return {
+        label,
+        count: label === 'ALL' ? this.dojoData.length : this.dojoData.filter(d => d.type === label).length,
+        isActive,
+        background: isActive ? '#26221a' : 'rgba(247,243,233,0.7)',
+        color: isActive ? '#f7f3e9' : '#4d463a',
+        borderColor: isActive ? '#26221a' : '#d8cfba',
+        select: () => this.setState({ dojoFilter: label }),
+        key: this.onActivate(() => this.setState({ dojoFilter: label })),
+      };
+    });
+
+    const visible = this.dojoData.filter(d => dojoFilter === 'ALL' || d.type === dojoFilter);
+
     return {
       rootRef: el => { this.root = el; },
       inkCanvasRef: el => { this.inkCanvas = el; },
-      goHome: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
-      goAbout: () => this.goTo('about'),
-      goProjects: () => this.goTo('projects'),
-      goContact: () => this.goTo('contact'),
+      goHome,
+      goAbout,
+      goProjects,
+      goDojo,
+      goContact,
+      goHomeKey: this.onActivate(goHome),
+      goAboutKey: this.onActivate(goAbout),
+      goProjectsKey: this.onActivate(goProjects),
+      goDojoKey: this.onActivate(goDojo),
+      goContactKey: this.onActivate(goContact),
       showMusic: this.props.showMusic ?? true,
-      projects: this.projectData.map(p => ({
-        ...p,
-        statusColor: p.status === 'LIVE' ? '#8c2f1b' : '#8a7f68',
-        isOpen: openId === p.id,
-        chevron: openId === p.id ? '▲' : '▼',
-        toggle: () => this.setState(s => ({ openId: s.openId === p.id ? null : p.id })),
-        stop: e => e.stopPropagation(),
-      })),
+      projects: this.projectData.map(p => {
+        const toggle = () => this.setState(s => ({ openId: s.openId === p.id ? null : p.id }));
+        return {
+          ...p,
+          statusColor: p.status === 'LIVE' ? '#8c2f1b' : '#8a7f68',
+          isOpen: openId === p.id,
+          chevron: openId === p.id ? '▲' : '▼',
+          toggle,
+          key: this.onActivate(toggle),
+          stop: e => e.stopPropagation(),
+        };
+      }),
+      dojoFilters,
+      dojoIsEmpty: visible.length === 0,
+      dojoEntries: visible.map(d => {
+        const isOpen = openDrawerId === d.id;
+        const toggle = () => this.setState(s => ({ openDrawerId: s.openDrawerId === d.id ? null : d.id }));
+        return {
+          ...d,
+          isOpen,
+          hasQuote: Boolean(d.quote),
+          // An open drawer is physically pulled out of the cabinet. Hover only
+          // tints the face, so the two effects never fight over the transform.
+          faceTransform: isOpen ? 'translateX(16px)' : 'translateX(0)',
+          faceBackground: isOpen ? '#f1ead9' : 'transparent',
+          faceShadow: isOpen ? '-14px 0 22px -14px rgba(38,34,26,0.55)' : 'none',
+          pullColor: isOpen ? '#8c2f1b' : '#26221a',
+          toggle,
+          key: this.onActivate(toggle),
+          stop: e => e.stopPropagation(),
+        };
+      }),
     };
   }
 }
