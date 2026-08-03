@@ -262,7 +262,7 @@
             <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; line-height: 1.2; margin: 0 0 28px;">The dojo door is open.</h2>
             <p style="font-size: 19px; line-height: 1.75; color: #4d463a; margin: 0 0 40px; max-width: 440px;">Interesting projects, collaborations, or fellow builders who just want to connect, the best way to reach me is by email.</p>
             <div style="display: flex; flex-direction: column; gap: 16px; font-size: 20px;">
-              <a href="mailto:adiallovc@gmail.com" style="text-decoration: none; display: flex; align-items: center; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; width: 70px;">MAIL</span>adiallovc@gmail.com</a>
+              <a href="mailto:diallodojo@gmail.com" style="text-decoration: none; display: flex; align-items: center; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; width: 70px;">MAIL</span>diallodojo@gmail.com</a>
               <a href="https://github.com/dialloDojo" target="_blank" rel="noopener" style="text-decoration: none; display: flex; align-items: center; gap: 16px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.2em; color: #8a7f68; width: 70px;">GITHUB</span>/dialloDojo</a>
             </div>
             <sc-if value="{{ showMusic }}" hint-placeholder-val="{{ true }}">
@@ -308,6 +308,13 @@ class Component extends DCLogic {
   dojoCategories = ['EXPERIMENT', 'TOOL', 'ESSAY'];
   dojoData = [
     {
+      id: 'monty', kanji: '実験', type: 'EXPERIMENT', name: 'Monty Finance',
+      tagline: 'Automated ML-enabled trading simultation',
+      detail: 'A script that runs every evening, simulates trades across the stock and crypto markets, and uses machine learning to evolve its own strategies over time. Eleven strategies compete on equal money: ten are rules I wrote, and the eleventh is written by a genetic algorithm that breeds strategies against each other and rewrites the loser. It decides what to change on its own and emails me what it did. The hard part was never finding a strategy that looks good on past prices, it was building something that can look at its own best result and say "this is probably luck." The first serious run produced exactly that verdict, and it is the most useful thing the system has done so far.',
+      meta: 'Python · SQLite · genetic algorithm · runs nightly on one laptop',
+      url: 'monty-finance.html', cta: 'READ MORE →',
+    },
+    {
       id: 'fiblabs', kanji: '実験', type: 'EXPERIMENT', name: 'fibLabs',
       tagline: 'Fibonacci as a teaching sandbox',
       detail: 'Two zero-dependency Node labs built on the same seven-line function. Lab 0 races five implementations and audits where each one stops being exact: Binet\'s closed form is the fastest and starts returning wrong answers at n=71, silently. Lab 1 renders the same math as terminal graphics.',
@@ -316,7 +323,7 @@ class Component extends DCLogic {
     },
     {
       id: 'braille', kanji: '実験', type: 'EXPERIMENT', name: 'brailleCanvas',
-      tagline: 'a terminal plotter at 8x the resolution',
+      tagline: 'Terminal plotter at 8x the resolution',
       detail: 'A terminal places one character per grid cell, so drawing with blocks caps you at one plottable point per cell and every curve becomes a staircase. Unicode gives all 256 eight-dot braille patterns their own codepoint, and each is a 2x4 grid of independently raisable dots, so one cell carries eight addressable points instead of one. Same screen area, eight times the detail. Run "node demo.js resolution" to see the same sine wave drawn both ways.',
       meta: 'Unicode U+2800 to U+28FF · ANSI · Node · no dependencies',
       url: 'https://github.com/dialloDojo/brailleCanvas', cta: 'VIEW SOURCE →',
@@ -342,6 +349,23 @@ class Component extends DCLogic {
   componentDidMount() {
     this.startInk();
     this.observeReveals();
+    this.honourHash();
+  }
+  // Sections are rendered client side, so the browser resolves a #fragment
+  // before this component exists, finds nothing and leaves you at the top.
+  // Coming back from a sub page like monty-finance.html that means losing your
+  // place and scrolling the whole way down again, so the hash is applied by
+  // hand once the sections are actually in the DOM. Jump, not smooth scroll:
+  // arriving from another page should feel like landing, not like being flung.
+  honourHash() {
+    const id = (window.location.hash || '').slice(1);
+    if (!id) return;
+    requestAnimationFrame(() => {
+      const el = this.root && this.root.querySelector('#' + id);
+      if (el) {
+        window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 40 });
+      }
+    });
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.inkRaf);

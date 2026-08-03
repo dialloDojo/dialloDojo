@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monty Finance - dialloDojo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/pole.png">
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "uw13xnk7g0");
+</script>
+</head>
+<body>
+
+    <div class="container">
+        <nav>
+            <a href="index.html" class="home-icon">
+                <img src="images/pole.png" alt="Home" width="30" height="25">
+            </a><br>
+            <ul>
+                <li><a href="index.html#dojo">Dojo</a></li>
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </nav>
+
+        <div></div>
+
+        <main>
+            <article>
+
+                <h1>Monty Finance</h1>
+                <span>| STAGE: RUNNING | STARTED: AUGUST 2026 |</span>
+
+                <p><b>I built a script that runs every evening, simulates trades
+                across the stock and crypto markets, and uses machine learning to
+                evolve its own strategies over time.</b> It manages eleven competing
+                strategies, decides on its own what to change, and emails me what it
+                did and why.</p>
+
+                <p>It trades paper money. The point is not to make money yet, it is
+                to find out whether any of this works when measured honestly.</p>
+
+                <h2>What it does</h2>
+
+                <p>Every evening, without me:</p>
+
+                <p>It pulls the day's closing prices, runs eleven separate strategies
+                against them, and records the trades each one would have made. It
+                checks how much risk each strategy is carrying and pulls back the ones
+                that are struggling. It considers a few changes it could make to
+                improve itself, tests each one against data it has not seen, and
+                applies at most one if the test says it genuinely helps. Then it sends
+                me a report with charts.</p>
+
+                <p>Ten of the eleven strategies are rules I wrote. The eleventh is
+                different: its rules were discovered by a genetic algorithm that
+                breeds strategies against each other, keeps the ones that survive, and
+                rewrites the loser. The real question the project is asking is whether
+                that evolved strategy can beat the ten a human designed, with all
+                eleven starting from the same money.</p>
+
+                <p>I am not in the loop. It decides, and I read what it did afterward.
+                Any change it makes I can undo with one command.</p>
+
+                <h2>The hard part</h2>
+
+                <p>Almost every trading system you find online shows a beautiful
+                chart of what it would have earned. Almost none of them mention that
+                such a chart is the easiest thing in finance to manufacture. If you
+                test enough strategies against past prices, one of them will look
+                brilliant purely by chance, and it will stop working the moment it
+                meets a market it has not seen.</p>
+
+                <p>So the interesting engineering problem here is not building a
+                strategy. It is building a system that can look at its own best result
+                and say <b>"this is probably luck."</b></p>
+
+                <p>Most of Monty Finance exists to do exactly that. It tests every
+                strategy against the worst market it can find rather than the average
+                one. It keeps a slice of recent data sealed off and never looks at it
+                during the search. And it mathematically discounts every result by how
+                many things it tried, because the more strategies you test, the better
+                the luckiest one looks.</p>
+
+                <p>The first serious run produced a strategy that looked good and was
+                rejected anyway, because that discount showed it was indistinguishable
+                from chance. <b>That rejection is the most useful thing the system has
+                produced so far.</b></p>
+
+                <h2>What I am testing</h2>
+
+                <p>It went live in August 2026 with eleven simulated funds of $1,000
+                each and a simulated $100 a month going into every one. It is measured
+                against the S&amp;P 500 over a multi-year horizon.</p>
+
+                <p>My honest expectation is that most of the eleven will lose to
+                simply buying an index fund. That would be a finding, not a failure.
+                In an earlier one-year simulation the system earned $159 of profit
+                against $3,150 of contributions, which is to say the deposits did
+                about 95% of the work. At small account sizes, saving consistently
+                beats being clever by an enormous margin, and it was worth building
+                something honest enough to show me that.</p>
+
+                <h2>Under the hood</h2>
+
+                <p><i>The detail, for anyone who wants it.</i></p>
+
+                <p><b>Structure.</b> Eleven independent funds, each holding 80%
+                equities and 20% crypto. Each sizes positions through four risk
+                controls that compound: fractional Kelly sizing from its own realized
+                edge, a drawdown circuit breaker that halves exposure at -12% and
+                stops trading at -22%, a volatility brake, and a high-water ratchet
+                that protects gains as they accumulate. All performance is
+                time-weighted, so contributions never masquerade as returns.</p>
+
+                <p><b>What is genuinely machine learning.</b> The genetic algorithm: a
+                population of 200 candidate strategies, tournament selection,
+                crossover that swaps rule blocks between parents, mutation, and
+                speciation by genetic distance so the population does not collapse
+                onto a single idea. Everything else is not learning, and I would
+                rather say so. The loop that tunes parameters is hill-climbing with an
+                out-of-sample gate. The risk layer is closed-form math. There are no
+                neural networks, because daily prices give roughly 250 samples a year
+                and that is far too thin to train one honestly.</p>
+
+                <p><b>The statistics.</b> Evaluate 8,000 candidate strategies and the
+                best result drawn from pure random noise reaches an annualized Sharpe
+                ratio near 3.0. A strategy scoring 1.3 after that search has therefore
+                found nothing, even though 1.3 would be respectable if you had only
+                tried once. The system computes a deflated Sharpe ratio that corrects
+                for the number of trials and refuses to call anything validated below
+                a 95% probability of genuine skill.</p>
+
+                <p><b>What it cannot do.</b> The stock list is today's tickers, so
+                companies that failed are underrepresented and every backtest is
+                flattered by survivorship bias. The strategies were designed by
+                someone who lived through the markets they are tested on. Fills are
+                simulated at closing prices with flat costs rather than real spreads.
+                No shorting, no options, no leverage, deliberately.</p>
+
+                <h2>Stack</h2>
+
+                <p>Python, pandas, NumPy, SQLite, matplotlib, and a local language
+                model for writing the daily summary. No cloud and no external
+                services. The whole thing runs on a MacBook Pro and finishes its
+                nightly work in under a minute.</p>
+
+                <p>The source is private. If you want to talk about it,
+                <a href="mailto:diallodojo@gmail.com">get in touch</a>.</p>
+
+                <p><br><i>Paper trading only. No real orders, no real money, and no
+                proven edge. Nothing here is financial advice.</i></p>
+
+                <p><a href="index.html#dojo">&larr; Back to the dojo</a></p>
+
+            </article>
+        </main>
+    </div>
+
+</body>
+</html>
