@@ -147,9 +147,11 @@
               <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                 <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Claude Code</span>
                 <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Strudel</span>
-                <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">n8n</span>
                 <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Python</span>
                 <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Yuka</span>
+                <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">FastApi</span>
+                <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Youtube</span>
+                <span style="border: 1px solid #d8cfba; padding: 6px 14px; font-size: 15px; background: rgba(247,243,233,0.7);">Neovim</span>
               </div>
             </div>
           </div>
@@ -168,7 +170,7 @@
           <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
         </div>
         <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; margin: 56px 0 16px;">Hanging scrolls.</h2>
-        <p style="font-size: 19px; color: #4d463a; margin: 0 0 56px;">Three works in progress. Pull one down to read it.</p>
+        <p style="font-size: 19px; color: #4d463a; margin: 0 0 56px;">Three projects in the backlog. Pull one down to read it.</p>
       </div>
       <div class="r-projects" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start;">
         <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
@@ -308,6 +310,14 @@ class Component extends DCLogic {
   dojoCategories = ['EXPERIMENT', 'TOOL', 'ESSAY'];
   dojoData = [
     {
+      id: 'counter', kanji: '文字', type: 'TOOL', name: 'Neovim W-Counter',
+      tagline: 'Gamify coding with a simple counter',
+      quote: 'A lightweight Neovim script that tracks every file save (:w), gives you "Ws in the chat" notifications, and logs your stats locally!',
+      detail: 'This is a simple counting tool I built for myself to learn by doing, flex my growing nvim prowess and gamify coding for the perpetuity of my coding journey. As I code more, save more files, I climb the leaderboard. This is the foundation of a larger project I will build on the side to log events and keep stats on my progression, activity and consistency over time. I will code in different logs for consecutive days coding, track streaks and maybe even introduce levels to progress. Excited to see how this project grows, I\'d love for it to become an open-source project where others help improve the plugin.',
+      meta: 'Lua · Gamify · Neovim ',
+      url: 'https://github.com/dialloDojo/nvim-w-counter', cta: 'STAR REPO →',
+    },
+    {
       id: 'monty', kanji: '実験', type: 'EXPERIMENT', name: 'Monty Finance',
       tagline: 'Automated ML-enabled trading simultation',
       detail: 'A script that runs every evening, simulates trades across the stock and crypto markets, and uses machine learning to evolve its own strategies over time. Eleven strategies compete on equal money: ten are rules I wrote, and the eleventh is written by a genetic algorithm that breeds strategies against each other and rewrites the loser. It decides what to change on its own and emails me what it did. The hard part was never finding a strategy that looks good on past prices, it was building something that can look at its own best result and say "this is probably luck." The first serious run produced exactly that verdict, and it is the most useful thing the system has done so far.',
@@ -320,13 +330,6 @@ class Component extends DCLogic {
       detail: 'Two zero-dependency Node labs built on the same seven-line function. Lab 0 races five implementations and audits where each one stops being exact: Binet\'s closed form is the fastest and starts returning wrong answers at n=71, silently. Lab 1 renders the same math as terminal graphics.',
       meta: 'JavaScript · Node · two labs',
       url: 'https://github.com/dialloDojo/fibLabs', cta: 'VIEW SOURCE →',
-    },
-    {
-      id: 'braille', kanji: '実験', type: 'EXPERIMENT', name: 'brailleCanvas',
-      tagline: 'Terminal plotter at 8x the resolution',
-      detail: 'A terminal places one character per grid cell, so drawing with blocks caps you at one plottable point per cell and every curve becomes a staircase. Unicode gives all 256 eight-dot braille patterns their own codepoint, and each is a 2x4 grid of independently raisable dots, so one cell carries eight addressable points instead of one. Same screen area, eight times the detail. Run "node demo.js resolution" to see the same sine wave drawn both ways.',
-      meta: 'Unicode U+2800 to U+28FF · ANSI · Node · no dependencies',
-      url: 'https://github.com/dialloDojo/brailleCanvas', cta: 'VIEW SOURCE →',
     },
     {
       id: 'bitter', kanji: '随筆', type: 'ESSAY', name: 'The Bitter Lesson',
