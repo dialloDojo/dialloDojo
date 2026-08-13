@@ -51,7 +51,9 @@
     .r-hero { padding: 110px 24px 70px !important; }
     .r-sec { padding: 90px 24px !important; }
     .r-grid-2 { grid-template-columns: 1fr !important; gap: 48px !important; }
-    .r-projects { grid-template-columns: 1fr 1fr !important; }
+    /* Two scrolls side by side get too narrow to read below this width, so they
+       stack — capped so a single card never stretches the full tablet width. */
+    .r-projects { grid-template-columns: 1fr !important; max-width: 620px !important; }
     .r-vert { display: none !important; }
     .r-drawer-tag { display: none !important; }
     /* The vertical caption is hidden at this width, so the portrait no longer
@@ -63,7 +65,6 @@
     .r-logo-text { display: none !important; }
     .r-nav-links { gap: 18px !important; font-size: 14px !important; }
     .r-cols { grid-template-columns: 1fr !important; gap: 28px !important; }
-    .r-projects { grid-template-columns: 1fr !important; }
     .r-notes { flex-direction: column !important; gap: 14px !important; }
     .r-footer { flex-direction: column !important; gap: 10px !important; text-align: center !important; }
     .r-drawer-kanji { display: none !important; }
@@ -172,10 +173,10 @@
           <div style="flex: 1; height: 1px; background: #d8cfba;"></div>
         </div>
         <h2 style="font-size: clamp(32px, 6vw, 44px); font-weight: 400; margin: 56px 0 16px;">Hanging scrolls.</h2>
-        <p style="font-size: 19px; color: #4d463a; margin: 0 0 56px;">Three projects in the backlog. Pull one down to read it.</p>
+        <p style="font-size: 19px; color: #4d463a; margin: 0 0 56px;">Two projects in the backlog. Pull one down to read it.</p>
       </div>
-      <div class="r-projects" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start;">
-        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
+      <div class="r-projects" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; align-items: start; max-width: 940px;">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="2">
           <div data-reveal="1" onClick="{{ p.toggle }}" onKeyDown="{{ p.key }}" role="button" sc-camel-tab-index="0" aria-expanded="{{ p.isOpen }}" style="opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease, box-shadow 0.35s ease; cursor: pointer;">
             <div style="height: 10px; background: #26221a; box-shadow: 0 3px 0 rgba(60,50,30,0.2);"></div>
             <div style="background: rgba(252,249,241,0.92); border: 1px solid #d8cfba; border-top: none; padding: 26px 24px 22px; transition: transform 0.35s ease;" style-hover="transform: translateY(6px);">
